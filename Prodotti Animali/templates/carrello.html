@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrello</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Carrello</h1>
+
+        {% if carrello_prodotti %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Marca</th>
+                        <th>Prezzo</th>
+                        <th>Quantità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prodotto in carrello_prodotti %}
+                        <tr>
+                            <td>{{ prodotto.nome }}</td>
+                            <td>{{ prodotto.marca }}</td>
+                            <td>€{{ prodotto.prezzo }}</td>
+                            <td>{{ prodotto.quantita }}</td>
+                            <td>
+                                <a href="{{ url_for('rimuovi_dal_carrello', prodotto_id=prodotto.id) }}" class="btn btn-danger">Rimuovi</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2"><strong>Totale:</strong></td>
+                        <td colspan="2"><strong>€{{ total_price }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <form method="POST" action="{{ url_for('acquista') }}">
+                <button type="submit" class="btn btn-success">Acquista</button>
+            </form>
+        {% else %}
+            <p>Il carrello è vuoto.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

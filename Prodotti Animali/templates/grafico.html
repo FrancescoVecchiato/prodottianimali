@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafico Prodotti</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Distribuzione dei Prodotti per Pezzi</h1>
+        <div class="text-center">
+            <img src="data:image/png;base64,{{ grafico_url }}" alt="Grafico a torta dei prodotti">
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Torna alla Home</a>
+        </div>
+    </div>
+</body>
+</html>

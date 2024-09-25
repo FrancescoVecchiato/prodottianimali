@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Prodotti</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Store Prodotti</h1>
+
+        <form method="POST" action="{{ url_for('seleziona_prodotti') }}">
+            <div class="row">
+                {% for prodotto in prodotti %}
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="{{ prodotto.url }}" class="card-img-top" alt="{{ prodotto.nome }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ prodotto.nome }}</h5>
+                                <p class="card-text">Marca: {{ prodotto.marca }}<br>Prezzo: €{{ prodotto.prezzo }}<br>Quantità: {{ prodotto.pezzi }}</p>
+                                <div class="form-group">
+                                    <input type="checkbox" name="selezionati" value="{{ prodotto.id }}">
+                                    <input type="number" name="quantita_{{ prodotto.id }}" placeholder="Quantità" min="1" class="form-control d-inline" style="width: 100px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-success">Aggiungi al Carrello</button>
+        </form>
+
+        <a href="{{ url_for('carrello') }}" class="btn btn-info mt-4">Visualizza Carrello</a>
+    </div>
+</body>
+</html>

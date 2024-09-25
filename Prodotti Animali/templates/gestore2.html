@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Prodotti</title>
+    <!-- Includere Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   <script>
+    window.addEventListener('beforeunload', function (e) {
+        fetch('/logout', {method: 'POST'});
+    });
+</script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center text-success">Gestione Prodotti per Animali</h1>
+         <div class="text-center mb-4">
+            <a href="{{ url_for('grafico_prezzi') }}" class="btn btn-info">Visualizza Grafico Prodotti</a>
+        </div>
+        <h2 class="mt-4">Aggiungi Prodotto</h2>
+        <form method="POST" action="/aggiungi" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="nome" placeholder="Nome" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="marca" placeholder="Marca" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" name="prezzo" placeholder="Prezzo" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="url" placeholder="URL Immagine" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="number" class="form-control" name="quantita" placeholder="Quantità" required>
+                </div>
+               <div class="col-auto">
+                    <select name="categoria" class="form-control">
+                        <option value="Cibo">Cibo</option>
+                        <option value="Giocattoli">Giocattoli</option>
+                        <option value="Accessori">Accessori</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-success">Aggiungi</button>
+                </div>
+            </div>
+        </form>
+
+       <h2>Prodotti</h2>
+<ul class="list-group mb-4">
+    {% for prodotto in prodotti %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ prodotto.nome }} - {{ prodotto.marca }} - €{{ prodotto.prezzo }} - Quantità: {{ prodotto.pezzi }}
+            <img src="{{ prodotto.url }}" alt="Immagine di {{ prodotto.nome }}" class="img-prodotto" style="max-width: 100px; height: auto; margin-left: 10px;">
+            <div>
+                <form method="POST" action="/modifica/{{ prodotto.id }}" class="d-inline">
+                    <input type="number" name="quantita" placeholder="Nuova Quantità" required class="form-control d-inline" style="width: 150px;">
+                    <button type="submit" class="btn btn-warning btn-sm">Modifica</button>
+                </form>
+                <a href="/elimina/{{ prodotto.id }}" class="btn btn-danger btn-sm ml-2">Elimina</a>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+
+        <h2>Filtra per Categoria</h2>
+        <form method="GET" action="/categoria" class="mb-4">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <select name="categoria" class="form-control">
+                        <option value="Cibo">Cibo</option>
+                        <option value="Giocattoli">Giocattoli</option>
+                        <option value="Accessori">Accessori</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Filtra</button>
+                </div>
+            </div>
+        </form>
+        <form method = "Get" action = "/genera-file" class="mb-4">
+                <div class ="form-row align-items-center">
+                    <button type="submit" class="btn btn-primary">Genera file CSV</button>
+                </div>
+        </form>
+    </div>
+    <h3>Dati di vendita</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Pezzi in magazzino</th>
+                <th scope="col">Pezzi venduti</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for pr in lista %}
+                 {% if pr[1]== prodottoMax %}
+                    <tr style="background-color: yellow;">
+                        {% elif pr[1]== prodottoMin %}
+                            <tr style="background-color: indianred">
+
+                        {% else %}
+                        <tr>
+                {% endif %}
+                    <th scope="row">{{ pr[0] }}</th>
+                    <td>{{ pr[1] }}</td>
+                    <td>{{ pr[2] }}</td>
+                    <td>{{ pr[3] }}</td>
+                    <td>{{ pr[4] }}</td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Includere Bootstrap JS e jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
